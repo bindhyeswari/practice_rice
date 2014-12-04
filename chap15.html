@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+
+<div id="div1" >hello</div>
+<div name="div1">hello1
+<div name="div1">hello2
+    <div name="div1">hello3</div>
+</div>
+</div>
+
+
+<p name="p">
+    <span name="span">hello4</span>
+</p>
+
+
+<div id="log">
+    <div class="error">error
+        <div class="fatal">error1</div>
+        <div class="fatal error">error2</div>
+        <div class="error fatal">error3</div>
+    </div>
+    <div class="fatal">error4</div>
+</div>
+
+
+<script>
+    var section = document.getElementById('div1');
+    console.log(section.value); //undefined
+    console.log(section.textContent);//hello
+
+    var section1 = document.getElementsByName('div1');
+    console.log(section1[0].textContent);// hello1,hello2hello3: textcontent display its own and children's text
+    console.log(section1[2].textContent);//hello3
+    console.log(section1[2].innerHTML);//hello3
+    console.log(section1[1].textContent);//hello2,hello3
+    console.log(section1[1].innerHTML);//hello2
+                                           //<div name="div1">hello3</div>: innerHTML display its text and children's
+                                            // text and HTML codes
+    console.log(section1[1].innerText);//undefined?
+
+    var firstP = document.getElementsByName('p')[0];
+    var first_span  = document.getElementsByName('span');//firstP.getElementByName('span'); is not a function?
+    console.log(firstP.textContent);//hello4
+    console.log(firstP.innerHTML);//<span>hello4</span>
+    console.log(first_span[0].textContent);//undefined?
+    console.log(first_span[0].innerHTML);//undefined?
+
+    first_span = document.getElementsByTagName('span');
+    console.log(first_span[0].textContent);//undefined?
+    console.log(first_span[0].innerHTML);//undefined?
+
+    var log = document.getElementById('log');//HTMLCOLLECTION
+    var fatal = log.getElementsByClassName('fatal error');
+    var fatal1 = log.getElementsByClassName('fatal');
+    var error = log.getElementsByClassName('error');
+    console.log(error[0].textContent);
+    console.log(error[0].innerHTML); // how to display only node itself's text?
+    console.log(fatal.length);//2
+    console.log(fatal[0].textContent);//error2
+    console.log(fatal[1].textContent);//error3
+    console.log(fatal1.length);//4
+    console.log(fatal1[0].textContent);//error1
+    console.log(fatal1[0].innerHTML);//error1
+    console.log(fatal1[1].textContent);//error2
+    console.log(fatal1[1].innerHTML);//error2
+    console.log(fatal1[2].textContent);//error3
+    console.log(fatal1[2].innerHTML);//error3
+    console.log(fatal1[3].textContent);//error4
+    console.log(fatal1[3].innerHTML);//error4
+
+    var selector = document.querySelectorAll('div');
+    console.log(selector.length);//10
+
+    selector1 = log.querySelector('.error');
+    console.log(selector1.textContent);//error
+                                           // error1,error2,error3
+    selector1 = log.querySelector('.fatal');
+    console.log(selector1.textContent);//error1
+
+    console.log(document.all[0]);
+    console.log(document.all['log']);
+    console.log(document.all.span);
+
+
+    var parent = document.getElementsByClassName('error')[1].parentNode;//<div class="error">error
+    console.log(parent);
+    var child = document.getElementById('log').childNodes;
+    var children = document.getElementById('log').children;
+    console.log(child);//NodeList
+    console.log(children);//HTMLCollection
+
+    console.log(parent.firstChild.textContent);//error
+    console.log(parent.lastChild.textContent);//''
+    console.log(parent.nextSibling.textContent);
+    console.log(parent.previousSibling.textContent);
+    console.log(parent.nodeType);//1
+    console.log(parent.nodeName);//div
+    console.log(parent.nodeValue);//null
+
+    console.log(log.firstChild.textContent);
+    console.log(log.lastChild.textContent);
+    console.log(log.nextSibling.textContent);
+    console.log(log.previousSibling);
+    console.log(log.nodeType);//1
+    console.log(log.nodeName);//div
+    console.log(log.nodeValue);//null
+
+
+</script>
+</body>
+</html>
