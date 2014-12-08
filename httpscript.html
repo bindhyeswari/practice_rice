@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+
+            var xmlHttp = new XMLHttpRequest();
+            var username = document.getElementById('name').value;
+            var age = document.getElementById('age').value;
+            xmlHttp.open('GET', username + age);
+            xmlHttp.addEventListener('readystatechange', function () {
+                if (xmlHttp.readyState === 4) {
+                    if (xmlHttp.status === 200) {
+                        document.getElementById('result').innerHTML = xmlHttp.responseText;
+                    }
+                }
+            });
+            xmlHttp.send(null);
+
+
+            function selection() {
+                var option = document.getElementsByTagName('option');
+                if (option[option.selectedIndex].value === 'name') {
+                    getname();
+                }
+                if (option[option.selectedIndex].value === 'capital') {
+                    getcapital();
+                }
+                if (option[option.selectedIndex].value === 'region') {
+                    getregion();
+                }
+                if (option[option.selectedIndex].value === 'population') {
+                    getpopulation();
+                }
+
+            }
+
+            function getname() {
+                var xhr = new XMLHttpRequest();
+                console.log(xhr.readyState);
+
+                xhr.addEventListener('readystatechange', function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            /*console.log(xhr.responseText);*/
+                            var obj = JSON.parse(xhr.responseText);
+                            console.log(obj);
+                            var country_name = obj.map(function (element) {
+                                return 'country name:' + element.name;
+                            });
+                            var border = obj.map(function (element) {
+                                return element.border;
+                            });
+                            var list = document.getElementsByTagName('span')[0];
+                            for (var i = 0; i < country_name.length; i++) {
+                                list.innerHTML = list.innerHTML + country_name[i] + '<br />';
+
+                            }
+
+                        } else {
+                            console.log('There is an error' + xhr.statusText);
+                        }
+
+                    }
+
+
+                });
+                xhr.open('GET', 'http://uitr.herokuapp.com/countries');
+                xhr.send();
+            }
+
+            function getcapital() {
+                var xhr = new XMLHttpRequest();
+                console.log(xhr.readyState);
+
+                xhr.addEventListener('readystatechange', function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            /*console.log(xhr.responseText);*/
+                            var obj = JSON.parse(xhr.responseText);
+                            console.log(obj);
+                            var country_capital = obj.map(function (element) {
+                                return 'country capital:' + element.capital;
+                            });
+                            var border = obj.map(function (element) {
+                                return element.border;
+                            });
+                            var list = document.getElementsByTagName('span')[0];
+                            for (var i = 0; i < country_capital.length; i++) {
+                                list.innerHTML = list.innerHTML + country_capital[i] + '<br />';
+
+                            }
+
+                        } else {
+                            console.log('There is an error' + xhr.statusText);
+                        }
+
+                    }
+
+
+                });
+                xhr.open('GET', 'http://uitr.herokuapp.com/countries');
+                xhr.send();
+            }
+
+            function getregion() {
+                var xhr = new XMLHttpRequest();
+                console.log(xhr.readyState);
+
+                xhr.addEventListener('readystatechange', function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            /*console.log(xhr.responseText);*/
+                            var obj = JSON.parse(xhr.responseText);
+                            console.log(obj);
+                            var country_region = obj.map(function (element) {
+                                return 'country region:' + element.region;
+                            });
+                            var border = obj.map(function (element) {
+                                return element.border;
+                            });
+                            var list = document.getElementsByTagName('span')[0];
+                            for (var i = 0; i < country_region.length; i++) {
+                                list.innerHTML = list.innerHTML + country_region[i] + '<br />';
+
+                            }
+
+                        } else {
+                            console.log('There is an error' + xhr.statusText);
+                        }
+
+                    }
+
+
+                });
+                xhr.open('GET', 'http://uitr.herokuapp.com/countries');
+                xhr.send();
+            }
+
+            function getpopulation() {
+                var xhr = new XMLHttpRequest();
+                console.log(xhr.readyState);
+
+                xhr.addEventListener('readystatechange', function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            /*console.log(xhr.responseText);*/
+                            var obj = JSON.parse(xhr.responseText);
+                            console.log(obj);
+                            var country_population = obj.map(function (element) {
+                                return 'country population:' + element.population;
+                            });
+                            var border = obj.map(function (element) {
+                                return element.border;
+                            });
+                            var list = document.getElementsByTagName('span')[0];
+                            for (var i = 0; i < country_population.length; i++) {
+                                list.innerHTML = list.innerHTML + country_population[i] + '<br />';
+
+                            }
+
+                        } else {
+                            console.log('There is an error' + xhr.statusText);
+                        }
+
+                    }
+
+                });
+                xhr.open('GET', 'http://uitr.herokuapp.com/countries');
+                xhr.send();
+            }
+
+    </script>
+</head>
+<body>
+
+<div>name:
+    <input type="text" id="name"/></div><br />
+<div>age:
+    <input type="text" id="age"/></div><br />
+<input type="button" value="GET" id="button" onclik="click();"/>
+<div id="result"></div>
+
+
+<form action="GET">
+<select name="select">
+<option value="name">name</option>
+    <option value="capital">capital</option>
+    <option value="region">region</option>
+    <option value="population">population</option>
+</select>
+<input type="button" name="button" onclick="selection();"/>
+</form>
+<ul>
+    <li>
+        <span></span>
+    </li>
+</ul>
+
+
+</body>
+</html>
