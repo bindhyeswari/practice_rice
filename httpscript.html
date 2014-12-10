@@ -5,10 +5,100 @@
     <title></title>
     <script>
 
+        document.addEventListener("DOMContentLoaded",function() {
+            var request = new XMLHttpRequest();
+            console.log(request);
+            console.log('after creating http request object:');
+            console.log('status:'+request.status);
+            console.log('readystate:'+request.readyState);
+            /*request();
+        console.log(request);*/
+            request.open('GET','https://github.com/lrm0128');
+            console.log('after make an HTTP request: ');
+            console.log('status:'+request.status);
+            console.log('readystate:'+request.readyState);
+
+            request.setRequestHeader('Content-Type','text/plain');
+            console.log('status:'+request.status);
+            console.log('readystate:'+request.readyState);
+            request.addEventListener('readystatechange',function(){
+                console.log('status:'+request.status);
+                console.log(request.statusText);
+                console.log('readystate:'+request.readyState);
+                console.log('response header:'+request.getResponseHeader('Content-Type'));
+
+                console.log('response type:'+request.responseType);
+                if(request.getResponseHeader('Content-Type').match(/^text/));
+                    console.log('response text:'+request.responseText);
+            });
+            request.send(null);
+            console.log('status:'+request.status);
+            console.log('readystate:'+request.readyState);
+            /*order: open,setheader,send*/
+            request.open('POST','https://github.com/lrm0128');
+            console.log('status:'+request.status);
+            console.log('readystate:'+request.readyState);
+
+
+            /*var requestabort = new XMLHttpRequest();
+            requestabort.open('GET','http://www.w3schools.com/dom/books.xml');
+            requestabort.abort();
+            console.log(requestabort.responseXML);
+            console.log('status:'+requestabort.status);
+            console.log(requestabort.statusText);
+            console.log('readystate:'+requestabort.readyState);
+            requestabort.addEventListener('readystatechange',function(){
+                if( requestabort.readyState ===4 && requestabort.status ===200 ){
+                    var type = requestabort.getResponseHeader('Content-Type');
+                    if( type.indexOf("xml") !== -1 && requestabort.responseXML)
+                        console.log('receive xml');
+                }
+                console.log('status:'+requestabort.status);
+                console.log(requestabort.statusText);
+                console.log('readystate:'+requestabort.readyState);
+                console.log('response header:'+requestabort.getResponseHeader('Content-Type'));
+                console.log(requestabort.responseXML);
+            });
+            requestabort.send(null);*/
+
+
+            var xmlrequest = new XMLHttpRequest();
+            xmlrequest.open('GET','http://www.w3schools.com/dom/books.xml');
+            xmlrequest.addEventListener('readystatechange',function(){
+                 if( xmlrequest.readyState ===4 && xmlrequest.status ===200 ){
+                     var type = xmlrequest.getResponseHeader('Content-Type');
+                     if( type.indexOf("xml") !== -1 && xmlrequest.responseXML)
+                       console.log('receive xml');
+                 }
+                console.log('status:'+xmlrequest.status);
+                console.log(xmlrequest.statusText);
+                console.log('readystate:'+xmlrequest.readyState);
+                console.log('response header:'+xmlrequest.getResponseHeader('Content-Type'));
+                console.log(xmlrequest.responseXML);
+            });
+            xmlrequest.send(null);
+
+
+            var jsonrequest = new XMLHttpRequest();
+            jsonrequest.open('GET','http://uitr.herokuapp.com/countries');
+            jsonrequest.onreadystatechange = function(){
+                if ( jsonrequest.readyState ===4 && jsonrequest.status ===200) {
+                    console.log('status:' + jsonrequest.status);
+                    console.log(jsonrequest.statusText);
+                    console.log('readystate:' + jsonrequest.readyState);
+                    console.log('response header:' + jsonrequest.getResponseHeader('Content-Type'));
+                    console.log(jsonrequest.responseXML);
+                }
+            };
+            jsonrequest.setRequestHeader("Content-Type","application/json");
+            jsonrequest.send(JSON.stringify(jsonrequest.data));
+
+
+
             var xmlHttp = new XMLHttpRequest();
             var username = document.getElementById('name').value;
             var age = document.getElementById('age').value;
-            xmlHttp.open('GET', username + age);
+            xmlHttp.open('GET', 'http://localhost:49494/experiment/httpscript.html');
             xmlHttp.addEventListener('readystatechange', function () {
                 if (xmlHttp.readyState === 4) {
                     if (xmlHttp.status === 200) {
@@ -18,22 +108,58 @@
             });
             xmlHttp.send(null);
 
+            var encodexml = new XMLHttpRequest();
+            encodexml.open("POST",'http://www.w3schools.com/dom/books.xml');
+            encodexml.onreadystatechange = function(){
+                  if ( encodexml.readyState ===4){
+                      console.log('status:' + encodexml.status);
+                      console.log(encodexml.statusText);
+                      console.log('readystate:' + encodexml.readyState);
+                      console.log('response header:' + encodexml.getResponseHeader('Content-Type'));
+                      console.log(encodexml.responseXML);
+                      console.log(encodexml.getAllResponseHeaders());
+                  }
+            };
+            var file = document.implementation.createDocument("","query",null);
+            var query = file.documentElement;
+            var find = file.createElement("find");
+            query.appendChild(find);
+            console.log(query);
+            find.setAttribute('date',time);
+            find.setAttribute("place",location);
+            find.appendChild(file.createTextNode(what));
+            console.log(find);
+            encodexml.send(file);
+            console.log('status:' + encodexml.status);
+            console.log(encodexml.statusText);
+            console.log('readystate:' + encodexml.readyState);
+
+            var xmltime = new XMLHttpRequest();
+            var timeout = false;
+            var time = setTimeout(function(){
+                timeout = true;
+                xmltime.abort();
+            },timeout);
+            xmltime.open("GET","http://localhost:49494/experiment/httpscript.html");
+            xmltime.addEventListener("readystatechange",function(){
+                if ( xmltime.readyState ===4 && xmltime.status === 200){
+                    if (timeout ===false)
+                            return;
+                    clearTimeout(time);
+                    console.log('status:' + xmltime.status);
+                    console.log(xmltime.statusText);
+                    console.log('readystate:' + xmltime.readyState);
+                    console.log(xmltime.getAllResponseHeaders());
+                }
+            });
+            xmltime.send(null);
+
 
             function selection() {
                 var option = document.getElementsByTagName('option');
                 if (option[option.selectedIndex].value === 'name') {
                     getname();
                 }
-                if (option[option.selectedIndex].value === 'capital') {
-                    getcapital();
-                }
-                if (option[option.selectedIndex].value === 'region') {
-                    getregion();
-                }
-                if (option[option.selectedIndex].value === 'population') {
-                    getpopulation();
-                }
-
             }
 
             function getname() {
@@ -55,122 +181,16 @@
                             var list = document.getElementsByTagName('span')[0];
                             for (var i = 0; i < country_name.length; i++) {
                                 list.innerHTML = list.innerHTML + country_name[i] + '<br />';
-
                             }
-
                         } else {
                             console.log('There is an error' + xhr.statusText);
                         }
-
                     }
-
-
                 });
                 xhr.open('GET', 'http://uitr.herokuapp.com/countries');
                 xhr.send();
             }
-
-            function getcapital() {
-                var xhr = new XMLHttpRequest();
-                console.log(xhr.readyState);
-
-                xhr.addEventListener('readystatechange', function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            /*console.log(xhr.responseText);*/
-                            var obj = JSON.parse(xhr.responseText);
-                            console.log(obj);
-                            var country_capital = obj.map(function (element) {
-                                return 'country capital:' + element.capital;
-                            });
-                            var border = obj.map(function (element) {
-                                return element.border;
-                            });
-                            var list = document.getElementsByTagName('span')[0];
-                            for (var i = 0; i < country_capital.length; i++) {
-                                list.innerHTML = list.innerHTML + country_capital[i] + '<br />';
-
-                            }
-
-                        } else {
-                            console.log('There is an error' + xhr.statusText);
-                        }
-
-                    }
-
-
-                });
-                xhr.open('GET', 'http://uitr.herokuapp.com/countries');
-                xhr.send();
-            }
-
-            function getregion() {
-                var xhr = new XMLHttpRequest();
-                console.log(xhr.readyState);
-
-                xhr.addEventListener('readystatechange', function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            /*console.log(xhr.responseText);*/
-                            var obj = JSON.parse(xhr.responseText);
-                            console.log(obj);
-                            var country_region = obj.map(function (element) {
-                                return 'country region:' + element.region;
-                            });
-                            var border = obj.map(function (element) {
-                                return element.border;
-                            });
-                            var list = document.getElementsByTagName('span')[0];
-                            for (var i = 0; i < country_region.length; i++) {
-                                list.innerHTML = list.innerHTML + country_region[i] + '<br />';
-
-                            }
-
-                        } else {
-                            console.log('There is an error' + xhr.statusText);
-                        }
-
-                    }
-
-
-                });
-                xhr.open('GET', 'http://uitr.herokuapp.com/countries');
-                xhr.send();
-            }
-
-            function getpopulation() {
-                var xhr = new XMLHttpRequest();
-                console.log(xhr.readyState);
-
-                xhr.addEventListener('readystatechange', function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            /*console.log(xhr.responseText);*/
-                            var obj = JSON.parse(xhr.responseText);
-                            console.log(obj);
-                            var country_population = obj.map(function (element) {
-                                return 'country population:' + element.population;
-                            });
-                            var border = obj.map(function (element) {
-                                return element.border;
-                            });
-                            var list = document.getElementsByTagName('span')[0];
-                            for (var i = 0; i < country_population.length; i++) {
-                                list.innerHTML = list.innerHTML + country_population[i] + '<br />';
-
-                            }
-
-                        } else {
-                            console.log('There is an error' + xhr.statusText);
-                        }
-
-                    }
-
-                });
-                xhr.open('GET', 'http://uitr.herokuapp.com/countries');
-                xhr.send();
-            }
-
+});
     </script>
 </head>
 <body>
