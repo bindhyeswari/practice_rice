@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        var square = function(x){
+            return x*x;
+        }
+        var f = function factorial(x)
+        {
+            if ( x <= 1) return 1;
+            else return x*factorial(x-1);
+        }
+        console.log(square(2));
+        console.log(f(5));
+
+        function innerfunc(x,y){
+            function square(x){
+                return x*x;
+            }
+            return Math.sqrt(square(x) + square(y));
+        }
+
+        console.log(innerfunc(2,3));
+
+        var strict = (function (){
+            return this;
+        }());
+        var self = function(a){
+              return this.value;
+        };
+        console.log(self(3));
+        var self = function(a){
+            return this;
+        }
+        console.log(self(3));
+
+        var obj = {
+            m: function(){
+                var self = this;
+                console.log(this === obj);
+                f();
+
+                function f(){
+                    console.log(this === obj);
+                    console.log(self === obj);
+                }
+            }
+        }
+        obj.m();
+
+        function getpropertyname(x,y){
+            if ( y === 'undefined'){
+                y = [];
+            }
+            for ( var prop in x){
+                y.push(prop);
+                return y;
+            }
+        }
+        var a = getpropertyname([3,3],[]);
+        console.log(a);
+
+        //arguments
+
+        function max(){
+            var max = Number.NEGATIVE_INFINITY;
+            for( var i = 0; i < arguments.length; i++){
+                if ( arguments[i] > max){
+                    max = arguments[i];
+                }
+            }
+            return max;
+        }
+        var largest = max(1,2,3,64,5,6);
+        console.log(largest);
+
+        function f(x){
+            console.log(x);
+            arguments[0] = 'haha';
+            console.log(x);
+        }
+        var scope = 'global scope';
+        function checkscope1(){
+            var scope = 'local';
+            function f(){
+                return scope;
+            }
+            return f();
+        }
+        console.log(checkscope1());
+
+        function checkscope2(){
+            var scope = 'local';
+            function f(){
+                return scope;
+            }
+            return f;
+        }
+        console.log(checkscope2()());
+
+        function countfunc(){
+            var funcs = [];
+            for ( var i = 0; i < 10; i++){
+                funcs[i] = function(){
+                    return i;
+                }
+            }
+            return funcs;
+        }
+        var funcs = countfunc();
+        console.log(funcs[3]());
+
+        function bind_f(b){
+            return this.a + b;
+        }
+        var bind_obj = {
+            a:1// variable name must be same as bind function's 'this' variable
+        }
+        var g = bind_f.bind(bind_obj);
+        console.log(g(2));
+
+        var sum = function(x,y){
+            return x+y;
+        }
+        var success = sum.bind(null,1);
+        console.log(success(2));
+
+        function bind_f(y,z){
+            return this.x + y + z;
+        }
+        g = bind_f.bind({x:1},2);
+        console.log(g(3));
+
+        function createfuncarr(){
+            var result = new Array();
+            for ( var i = 0 ; i < 10; i++){
+                result[i] = function(num){
+                    return function(){
+                        return num;
+                    }
+                }(i);
+            }
+            return result;
+        }
+        console.log(createfuncarr());
+
+        var name = 'hello';
+        var object = {
+            name:'obj',
+            getnamefunc: function(){
+                return function(){
+                    return this.name;
+                }
+            }
+        };
+        console.log(object.getnamefunc()());//hello
+
+        function Person(name){
+            this.getname = function(){
+                return name;
+            };
+            this.setname = function (value){
+                name = value;
+            };
+        }
+        var person = new Person('Dec17');
+        console.log(person.getname());
+        person.setname('dec17');
+        console.log(person.getname());
+
+        var name1 = 'window';
+        var object1 = {
+            name:'hehe',
+            getnamefunc: function(){
+                var that = this;
+                return function(){
+                    return that.name;
+                }
+            }
+        };
+        console.log(object1.getnamefunc()());
+
+        function myobj(){
+            var privatevar = 10;
+            function privatefunction(){
+                return false;
+            }
+            this.publicmethod = function(){
+                privatevar++;
+                return privatefunction();
+            }
+        }
+        console.log(myobj());
+
+        (function(){
+            var name = '';
+            Person = function(value){
+                name = value;
+            }
+            Person.prototype.getname = function(){
+                return name;
+            }
+            Person.prototype.setname = function(value){
+                name = value;
+            }
+        })();
+
+        var person1 = new Person('hello1');
+        console.log(person1.getname());
+        person1.setname('hello2');
+        console.log(person1.getname());
+
+        var person2 = new Person('hehe');
+        console.log(person1.getname());
+        console.log(person2.getname());
+    </script>
+</head>
+<body>
+
+</body>
+</html>
