@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="searchApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+
+    <script>
+        var searchApp = angular.module('searchApp',['ngRoute','searchControllers']);
+        searchApp.config(['$routeProvider', function($routeProvider){
+            $routeProvider.when('/search', {
+                templateUrl: 'search.html',
+                controller: 'SearchController'
+                }).when('/repodetails/:repoid', {
+                templateUrl: 'repo-detail.html',
+                controller: 'RepoDetailController'
+            }).otherwise({
+                redirectTo:'/search'
+            });
+        }]);
+    </script>
+    <script>
+
+        var searchControllers = angular.module('searchControllers', []);
+        var repodata = null;
+        searchControllers.controller('SearchController', ['$scope', '$http', function($scope, $http){
+
+            $scope.search = '';
+            $scope.makeAjaxCall = function(event) {
+                console.log(event.keyCode);
+                if(event.keyCode === 13) {
+                    $http.get('https://api.github.com/search/repositories?q=' + $scope.search)
+                            .success(function (data) {
+                                console.log(data.items);
+                                $scope.searches = data;
+                                repodata = data;
+                            });
+                }
+            };
+        }]);
+        searchControllers.controller('RepoDetailController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams){
+            $scope.repoid  = $routeParams.repoid;
+            for ( var i = 0; i < repodata.items.length; i++){
+                if ( $scope.repoid == repodata.items[i].id){
+                    $scope.singlerepo = repodata.items[i];
+                }
+            }
+
+
+        }]);
+    </script>
+</head>
+<body>
+<div ng-view></div>
+</body>
+</html>
