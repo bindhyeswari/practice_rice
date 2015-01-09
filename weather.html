@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script>
+        var repodata = null;
+        angular.module('myApp',['ngRoute']).config(function ($routeProvider){
+            $routeProvider.when('/search',{
+                templateUrl: 'weather_result.html',
+                controller: 'SearchController'
+            }).otherwise({
+                redirectTo:'/search'
+            });
+        }).factory('WeatherService',function($http){
+            return {
+                lastQueryTerm:'',
+                data:null,
+                makeCall: function(queryTerm,callback){
+                    //$http.get('https://api.github.com/search/repositories?q='+queryTerm)
+                    $http.get('https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22'+queryTerm+'%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
+                            .success(function(data){
+                                callback(data);
+                            });
+                }
+            }
+        }).controller('SearchController',function(WeatherService,$scope){
+            $scope.query = '';
+
+            if( WeatherService.data !== 'undefined'){
+                $scope.data = WeatherService.data;
+                $scope.query = WeatherService.lastQueryTerm;
+            }
+            $scope.makeCall = function(event){
+                if ( event.keyCode == 13){
+                    WeatherService.makeCall($scope.query, function(data){
+                        console.log(data);
+                        $scope.data = data;
+                        repodata = data;
+                        var result = document.getElementById('result');
+                        result.innerHTML = data.query.results.channel.item.description;
+                    });
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+<div ng-view></div>
+</body>
+</html>
